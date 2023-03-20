@@ -24,7 +24,7 @@ The FmLTP handshake consists of three main portions: the version exchange, the e
   </tr>
   <tr>
     <td rowspan="2">Version Exchange</td>
-    <td>SERVER_VEX_INIT</td>
+    <td><a href="https://github.com/89mpxf/FlexMusic/blob/main/docs/HANDSHAKE.md#server_vex_init">SERVER_VEX_INIT</a></td>
     <td>x</td>
     <td></td>
   </tr>

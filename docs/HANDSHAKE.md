@@ -55,9 +55,9 @@ The FmLTP handshake consists of three main portions: the version exchange, the e
     <th>Description</th>
   </tr>
   <tr>
-    <td>Service Name</td>
+    <td>Version Friendly Name</td>
     <td>str</td>
-    <td>The name of the service (typically, "FlexMusic").</td>
+    <td>The friendly version string of the server. Should always start with "FlexMusic".</td>
   </tr>
   <tr>
     <td><i>separator</i></td>
@@ -80,7 +80,7 @@ The FmLTP handshake consists of three main portions: the version exchange, the e
 For example, a valid SERVER_VEX_INIT packet should look something like this:
 
 ```
-FlexMusic,0.0.0
+FlexMusic Pre-Alpha Development Server,0.0.0
 ```
 ### CLIENT_VEX_REPLY
 <table>
@@ -93,9 +93,9 @@ FlexMusic,0.0.0
     <th>Description</th>
   </tr>
   <tr>
-    <td>Service Name</td>
+    <td>Version Friendly Name</td>
     <td>str</td>
-    <td>The name of the service (typically, "FlexMusic").</td>
+    <td>The friendly version string of the client. Should always start with "FlexMusic".</td>
   </tr>
   <tr>
     <td><i>separator</i></td>
@@ -118,5 +118,5 @@ FlexMusic,0.0.0
 For example, a valid CLIENT_VEX_REPLY packet should look something like this:
 
 ```
-FlexMusic,0.0.0
+FlexMusic Pre-Alpha Development Client,0.0.0
 ```

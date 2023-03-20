@@ -14,6 +14,4 @@ def create_server(debug: bool = False) -> socket:
     if debug:
         log("bootstrap/create_server", "Binding server socket...")
     server.bind(("0.0.0.0", 8900))
-    if debug:
-        log("bootstrap/create_server", "Server instance created.")
     return server

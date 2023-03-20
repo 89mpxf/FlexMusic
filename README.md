@@ -2,5 +2,5 @@
 Open-source music backend for Discord bot development
 
 ## Documentation
-### Table of Contents
+### Technical Specifications
 - [Handshake Specification](https://github.com/89mpxf/FlexMusic/blob/main/docs/HANDSHAKE.md)

@@ -1,3 +1,7 @@
+# Begin FlexMusic
+server.conf
+
+# Begin default Python .gitignore template
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

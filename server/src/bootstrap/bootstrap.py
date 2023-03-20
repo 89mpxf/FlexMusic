@@ -1,5 +1,5 @@
 # Import dependencies
-from sys import argv
+from sys import argv, exit
 
 # Import local dependencies
 from ..util import log
@@ -12,8 +12,11 @@ def bootstrap_server():
     if debug:
         log("bootstrap", "Debug mode activated.")
     config = load_configuration(debug)
-    server = create_server(debug)
+    if not config:
+        print("FlexMusic Server failed to start.\nAn error occured during configuration loading.")
+        exit(1)
+    server = create_server(config, debug)
     if debug:
         log("bootstrap/create_server", "Server instance created.")
         log("bootstrap", "Handing off to runtime. Good luck!")
-    return runtime(server, debug)
+    return runtime(server, config, debug)

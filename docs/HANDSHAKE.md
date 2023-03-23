@@ -18,50 +18,58 @@ The FmLTP handshake consists of three main portions: the version exchange, the e
     <th>Packet Type</th>
     <th>Server</th>
     <th>Client</th>
+    <th>Encrypted</th>
   </tr>
   <tr>
-    <td colspan="4"><i>client establishes TCP connection with server</li></td>
+    <td colspan="5"><i>client establishes TCP connection with server</li></td>
   </tr>
   <tr>
     <td rowspan="2"><a href="../docs/HANDSHAKE.md#version_exchange">Version Exchange</a></td>
     <td><a href="../docs/HANDSHAKE.md#server_vex_init">SERVER_VEX_INIT</a></td>
     <td>x</td>
     <td></td>
+    <td>No</td>
   </tr>
   <tr>
     <td><a href="./docs/HANDSHAKE.md#client_vex_reply">CLIENT_VEX_REPLY</a></td>
     <td></td>
     <td>x</td>
+    <td>No</td>
   </tr>
   <tr>
     <td rowspan="5"><a href="../docs/HANDSHAKE.md#key-exchange--encryption-phase">Encryption Phase</a></td>
     <td><a href="../docs/HANDSHAKE.md#server_kex_init">SERVER_KEX_INIT</a></td>
     <td>x</td>
     <td></td>
+    <td>No</td>
   </tr>
   <tr>
     <td><a href="../docs/HANDSHAKE.md#client_kex_id">CLIENT_KEX_ID</a></td>
     <td></td>
     <td>x</td>
+    <td>No</td>
   </tr>
   <tr>
     <td><a href="../docs/HANDSHAKE.md#server_kex_id">SERVER_KEX_ID</a></td>
     <td>x</td>
     <td></td>
+    <td>No</td>
   </tr>
   <tr>
     <td>CLIENT_KEX_CHAL</td>
     <td></td>
     <td>x</td>
+    <td>Yes</td>
   </tr>
   <tr>
     <td>SERVER_KEX_FINAL</td>
     <td>x</td>
     <td></td>
+    <td>Yes</td>
   </tr>
   <tr>
     <td>Authoritative Phase</td>
-    <td colspan="3"><i>Not implemented yet</i></td>
+    <td colspan="4"><i>Not implemented yet</i></td>
   </tr>
 </table>
 
@@ -74,7 +82,7 @@ The version exchange portion of the handshake serves many purposes. On paper, th
 - Non-FlexMusic connections
 
 ### SERVER_VEX_INIT
-This is the very first packet sent in the handshake. This packet is sent by the server to initiate the handshake, and should be used by the client to manage version compatibility. Once a TCP connection is established, this packet should be sent by the server immediately afterwards.
+This is the very first packet sent in the handshake. This packet is sent by the server to initiate the handshake, and should be used by the client to manage version compatibility. Once a TCP connection is established, this packet should be sent by the server immediately afterwards. The value of this packet should be saved by the client once it receives it, as it will be needed later on in the handshake process.
 
 <table>
   <tr>
@@ -154,7 +162,19 @@ For example, a valid CLIENT_VEX_REPLY packet should look something like this:
 FlexMusic Python Client Library,0.0.0
 ```
 ## Key Exchange / Encryption Phase
-Unsurprisingly, the encryption phase of the handshake is the most complicated, but most important, phase of the handshake. Using a combination of the Diffie-Hellman key exchange and the Fernet cipher, the FlexMusic server creates a secure encrypted connection between itself and all of it's clients. This allows for the FlexMusic server and FlexMusic clients to connect to each other, from separate devices or potentially separate networks, without giving up security.
+Unsurprisingly, the encryption phase of the handshake is the most complicated, but most important, phase of the handshake. Using a combination of the Diffie-Hellman Key Exchange and the Fernet cipher, the FlexMusic server creates a secure encrypted connection between itself and all of it's clients. This allows for the FlexMusic server and FlexMusic clients to connect to each other, from separate devices or potentially separate networks, without giving up security.
+
+In basic terms, the entire process should look like this:
+1. While the FlexMusic server is starting, it generates two extremely large prime numbers, or "parameters". This set of parameters will be used for all connections. After the FlexMusic server closes, it will generate another set of parameters once it is started again, and so on.
+2. When a client connects, they enter the handshake. Once the client and the server exchange versions, the server will send the client these parameters in a serialized format.
+3. When the client recieves these parameters, it should use them to generate a random private and public key, or a "keypair". Once the public key is serialized, the client should send it to the server.
+4. When the server recieves the client's public key, it will then generate a random keypair of it's own, and will then exchange it's private key with the client's public key to generate the shared key.
+5. Once the server has the shared key, it will then perform HKDF to derive the SHA256 key that will be used for encryption. Once this key is in a url-safe base64 encoded form, it can be used for Fernet encryption/decryption.
+6. After the server has a valid Fernet cipher, it will send it's public key to the client. From that point, the client should follow the same steps as the server to perform the functions necessary for generating it's Fernet cipher.
+7. Once both the server and the client have generated the Fernet cipher for this session, the client should reply to the server with the value of the server's SERVER_VEX_INIT packet (from the version exchange portion), but encrypted with this cipher.
+8. Assuming the server recieves and successfully decrypts this message, the server will reply to the client with a status message. From this point forward, the server will begin accepting FmLTP operatives.
+
+**Important! At no point EVER should the client or server send one another their private key or the shared key for the session, even after the session has been encrypted.**
 
 ### SERVER_KEX_INIT
 This packet begins the encryption phase of the handshake. In order to begin the key exchange, the server sends it's Diffie-Hellman key parameters to allow the client to generate it's own compatible keypair.
@@ -242,3 +262,5 @@ C0GggA==
 ```
 
 **From this point forward, all further communications between the server and client are fully encrypted.**
+
+**From this point forward, read all packet tables as what is to be encrypted with the session's Fernet cipher before being sent.**

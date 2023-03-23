@@ -23,7 +23,7 @@ The FmLTP handshake consists of three main portions: the version exchange, the e
     <td colspan="4"><i>client establishes TCP connection with server</li></td>
   </tr>
   <tr>
-    <td rowspan="2">Version Exchange</td>
+    <td rowspan="2"><a href="https://github.com/89mpxf/FlexMusic/blob/main/docs/HANDSHAKE.md#version_exchange">Version Exchange</a></td>
     <td><a href="https://github.com/89mpxf/FlexMusic/blob/main/docs/HANDSHAKE.md#server_vex_init">SERVER_VEX_INIT</a></td>
     <td>x</td>
     <td></td>
@@ -34,8 +34,30 @@ The FmLTP handshake consists of three main portions: the version exchange, the e
     <td>x</td>
   </tr>
   <tr>
-    <td>Encryption Phase</td>
-    <td colspan="3"><i>Not implemented yet</i></td>
+    <td rowspan="5">Encryption Phase</td>
+    <td>SERVER_KEX_INIT</td>
+    <td>x</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>CLIENT_KEX_ID</td>
+    <td></td>
+    <td>x</td>
+  </tr>
+  <tr>
+    <td>SERVER_KEX_ID</td>
+    <td>x</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>CLIENT_KEX_CHAL</td>
+    <td></td>
+    <td>x</td>
+  </tr>
+  <tr>
+    <td>SERVER_KEX_FINAL</td>
+    <td>x</td>
+    <td></td>
   </tr>
   <tr>
     <td>Authoritative Phase</td>
@@ -43,8 +65,11 @@ The FmLTP handshake consists of three main portions: the version exchange, the e
   </tr>
 </table>
 
-## Packets
+# Packets
+## Version Exchange
 ### SERVER_VEX_INIT
+This is the very first packet sent in the handshake. This packet is sent by the server to initiate the handshake, and should be used by the client to manage version compatibility. Once a TCP connection is established, this packet should be sent by the server immediately afterwards.
+
 <table>
   <tr>
     <th colspan="3"><b>Fields</b></th>
@@ -80,9 +105,11 @@ The FmLTP handshake consists of three main portions: the version exchange, the e
 For example, a valid SERVER_VEX_INIT packet should look something like this:
 
 ```
-FlexMusic Pre-Alpha Development Server,0.0.0
+FlexMusic Server,0.0.0\r\n
 ```
 ### CLIENT_VEX_REPLY
+This is the second packet sent in the handshake process, and the first packet in the handshake sent by the client. This packet does two things; establish that the client is also a FlexMusic entity, and to manage version compatibility on the server side.
+
 <table>
   <tr>
     <th colspan="3"><b>Fields</b></th>
@@ -118,5 +145,30 @@ FlexMusic Pre-Alpha Development Server,0.0.0
 For example, a valid CLIENT_VEX_REPLY packet should look something like this:
 
 ```
-FlexMusic Pre-Alpha Development Client,0.0.0
+FlexMusic Python Client Library,0.0.0\r\n
+```
+## Key Exchange / Encryption Phase
+### SERVER_KEX_INIT
+This packet begins the encryption phase of the handshake. In order to begin the key exchange, the server sends it's Diffie-Hellman key parameters to allow the client to generate it's own compatible keypair.
+
+<table>
+  <tr>
+    <th>Field</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Parameters</td>
+    <td>bytes</td>
+    <td>Diffie-Hellman parameters, in PKCS3 format with PEM encoding.</td>
+  </tr>
+</table>
+
+For example, a valid SERVER_KEX_INIT packet should look like this:
+```
+-----BEGIN DH PARAMETERS-----
+MIGHAoGBAK0a7BmdPoU2/snNlwsT8oW1G76yUTABAGcwoiOTFbAe+XARtx+gkILH
+6eyWCKx6mn38HdBd9WdzRSMk6O1j0NrubsuSUKpXZSpc9mTtzyrp8ZfVv+223vci
+Z/f5KhcPuk4EijhOd17vqsXXCalSWlP4nh8RlLkqAFuQudvxwNxvAgEC
+-----END DH PARAMETERS-----
 ```

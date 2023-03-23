@@ -5,7 +5,7 @@ from socket import socket
 # Import local dependencies
 from ..util import log
 from ..session.session_manager import SessionManager
-from ..handshake.handshake import HandshakeHandler
+from ..handshake import HandshakeHandler
 
 class Session(Thread):
     def __init__(self, client: socket, address: tuple[str, int], server_compat_signature: tuple[str, int, int, int], keyring: tuple, session_manager: SessionManager, config: dict, debug: bool = False):

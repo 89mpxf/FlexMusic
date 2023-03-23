@@ -2,8 +2,8 @@
 from socket import socket
 
 # Import local dependencies
-from ..util import log
-from ..crypto import process_client_key
+from .util import log
+from .crypto import process_client_key
 
 class HandshakeHandler:
     def __init__(self, client: socket, address: tuple[str, int], server_compat_signature: tuple[str, int, int, int], keyring: tuple, config: dict, _id: int, debug: bool = False):

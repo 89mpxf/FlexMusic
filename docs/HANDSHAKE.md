@@ -23,19 +23,19 @@ The FmLTP handshake consists of three main portions: the version exchange, the e
     <td colspan="4"><i>client establishes TCP connection with server</li></td>
   </tr>
   <tr>
-    <td rowspan="2"><a href="https://github.com/89mpxf/FlexMusic/blob/main/docs/HANDSHAKE.md#version_exchange">Version Exchange</a></td>
-    <td><a href="https://github.com/89mpxf/FlexMusic/blob/main/docs/HANDSHAKE.md#server_vex_init">SERVER_VEX_INIT</a></td>
+    <td rowspan="2"><a href="../docs/HANDSHAKE.md#version_exchange">Version Exchange</a></td>
+    <td><a href="../docs/HANDSHAKE.md#server_vex_init">SERVER_VEX_INIT</a></td>
     <td>x</td>
     <td></td>
   </tr>
   <tr>
-    <td><a href="https://github.com/89mpxf/FlexMusic/blob/main/docs/HANDSHAKE.md#client_vex_reply">CLIENT_VEX_REPLY</a></td>
+    <td><a href="./docs/HANDSHAKE.md#client_vex_reply">CLIENT_VEX_REPLY</a></td>
     <td></td>
     <td>x</td>
   </tr>
   <tr>
-    <td rowspan="5">Encryption Phase</td>
-    <td>SERVER_KEX_INIT</td>
+    <td rowspan="5"><a href="../docs/HANDSHAKE.md#key-exchange--encryption-phase">Encryption Phase</a></td>
+    <td><a href="../docs/HANDSHAKE.md#server_kex_init">SERVER_KEX_INIT</a></td>
     <td>x</td>
     <td></td>
   </tr>
@@ -154,6 +154,8 @@ For example, a valid CLIENT_VEX_REPLY packet should look something like this:
 FlexMusic Python Client Library,0.0.0\r\n
 ```
 ## Key Exchange / Encryption Phase
+Unsurprisingly, the encryption phase of the handshake is the most complicated, but most important, phase of the handshake. Using a combination of the Diffie-Hellman key exchange and the Fernet cipher, the FlexMusic server creates a secure encrypted connection between itself and all of it's clients. This allows for the FlexMusic server and FlexMusic clients to connect to each other, from separate devices or potentially separate networks, without giving up security.
+
 ### SERVER_KEX_INIT
 This packet begins the encryption phase of the handshake. In order to begin the key exchange, the server sends it's Diffie-Hellman key parameters to allow the client to generate it's own compatible keypair.
 

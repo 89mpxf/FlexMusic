@@ -1,6 +1,5 @@
 # Import dependencies
 from os.path import exists
-from sys import exit
 
 # Import local dependencies
 from ..util import log
@@ -12,7 +11,14 @@ default_configuration = [
     "",
     "# Host/port to listen on",
     "host = 0.0.0.0",
-    "port = 8900"
+    "port = 8900",
+    "",
+    "# Encryption key size",
+    "# By default, this is set to 2048. Other recommended options include 512 or 1024",
+    "# NOTE: Lowering this value will make the FlexMusic server less secure, but may increase performance",
+    "# NOTE: Clients refer to this value when generating their own keypairs",
+    "key_size = 2048",
+    ""
 ]
 
 def create_configuration(debug: bool = False) -> bool:
@@ -31,16 +37,15 @@ def create_configuration(debug: bool = False) -> bool:
         return False
     
 def validate_configuration(config: dict, debug: bool = False) -> dict | None:
-    if "host" not in config:
-        if debug:
-            log("bootstrap/configuration/validator", "FATAL! Configuration missing 'host' key.")
-        return None
-    if "port" not in config:
-        if debug:
-            log("bootstrap/configuration/validator", "FATAL! Configuration missing 'port' key.")
-        return None
+    conf_keys = ["host", "port", "key_size"]
+    for key in conf_keys:
+        if key not in config:
+            if debug:
+                log("bootstrap/configuration/validator", f"FATAL! Configuration missing '{key}' key.")
+            return None
     
     config["port"] = int(config["port"])
+    config["key_size"] = int(config["key_size"])
     return config
 
 def load_configuration(debug: bool = False):

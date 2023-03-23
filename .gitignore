@@ -1,5 +1,6 @@
 # Begin FlexMusic
 server.conf
+.vscode
 
 # Begin default Python .gitignore template
 # Byte-compiled / optimized / DLL files

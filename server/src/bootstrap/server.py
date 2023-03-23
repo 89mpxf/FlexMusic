@@ -14,4 +14,6 @@ def create_server(config: dict, debug: bool = False) -> socket:
     if debug:
         log("bootstrap/create_server", "Binding server socket...")
     server.bind((config["host"], config["port"]))
+    if debug:
+        log("bootstrap/create_server", "Server created successfully.")
     return server

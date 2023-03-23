@@ -37,8 +37,7 @@ class Session(Thread):
             self.client.close()
             self.session_manager.remove_session(self)
             return
-        while True:
-            pass
+        return
 
     # Session Manager Hook
     # Do not call this hook directly or modify

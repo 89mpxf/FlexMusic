@@ -40,12 +40,12 @@ The FmLTP handshake consists of three main portions: the version exchange, the e
     <td></td>
   </tr>
   <tr>
-    <td>CLIENT_KEX_ID</td>
+    <td><a href="../docs/HANDSHAKE.md#client_kex_id">CLIENT_KEX_ID</a></td>
     <td></td>
     <td>x</td>
   </tr>
   <tr>
-    <td>SERVER_KEX_ID</td>
+    <td><a href="../docs/HANDSHAKE.md#server_kex_id">SERVER_KEX_ID</a></td>
     <td>x</td>
     <td></td>
   </tr>
@@ -111,7 +111,7 @@ This is the very first packet sent in the handshake. This packet is sent by the 
 For example, a valid SERVER_VEX_INIT packet should look something like this:
 
 ```
-FlexMusic Server,0.0.0\r\n
+FlexMusic Server,0.0.0
 ```
 ### CLIENT_VEX_REPLY
 This is the second packet sent in the handshake process, and the first packet in the handshake sent by the client. This packet does two things; establish that the client is also a FlexMusic entity, and to manage version compatibility on the server side.
@@ -151,7 +151,7 @@ This is the second packet sent in the handshake process, and the first packet in
 For example, a valid CLIENT_VEX_REPLY packet should look something like this:
 
 ```
-FlexMusic Python Client Library,0.0.0\r\n
+FlexMusic Python Client Library,0.0.0
 ```
 ## Key Exchange / Encryption Phase
 Unsurprisingly, the encryption phase of the handshake is the most complicated, but most important, phase of the handshake. Using a combination of the Diffie-Hellman key exchange and the Fernet cipher, the FlexMusic server creates a secure encrypted connection between itself and all of it's clients. This allows for the FlexMusic server and FlexMusic clients to connect to each other, from separate devices or potentially separate networks, without giving up security.
@@ -181,3 +181,64 @@ Z/f5KhcPuk4EijhOd17vqsXXCalSWlP4nh8RlLkqAFuQudvxwNxvAgEC
 -----END DH PARAMETERS-----
 ```
 _(note: the parameters above are for example purposes only. FlexMusic generates a new set of parameters everytime the server is launched.)_
+
+### CLIENT_KEX_ID
+Once the client recieves the server's key generation parameters and generates a keypair of it's own, this packet returns the client's public key to the server.
+
+<table>
+  <tr>
+    <th>Field</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Client Public Key</td>
+    <td>bytes</td>
+    <td>Diffie-Hellman public key, in SubjectPublicKeyInfo format with PEM encoding.</td>
+  </tr>
+</table>
+
+For example, a valid CLIENT_KEX_ID packet should look something like this:
+```
+-----BEGIN PUBLIC KEY----
+MIIBHzCBlQYJKoZIhvcNAQMBMIGHAoGBAIyAW0EUlyzVg3PZQTxRfLnbuyPu183B
+SFlj6eSuDljEFWxIRu1/EomghMDVUXA1AbxMuLshALmz+OHDa6ovAAuf8RCdBxI2
+Zi7MwEdp4i7CJuCraMeFW7XmVhSSrC22pYdMMz6TT9bw0M3j18c8vdirbr7uxmLQ
+bdGyvhKDuBzPAgECA4GEAAKBgEPO5uRdV8x1H41Z1qetiLAknjo1YP7Sleo/Ocma
+ipFpTyKhaAWWVZSEIgOyJZs6zY1x2nSXdlsg6wkNErHQ3pqgrJZM24Q3uC7wyFT1
+YVHqhTdk735h5WWsG+XIgtmpyVNqIMMpBri0Z8bL2MO8zUjI7h5PvWcOwtfrvto+
+r4nX
+-----END PUBLIC KEY-----
+```
+_(note: the public key above is for example purposes only.)_
+
+### SERVER_KEX_ID
+Assuming the client sends a valid public key in the previous packet, the server will generate it's own keypair. This packet relays the server's public key back to the client.
+
+<table>
+  <tr>
+    <th>Field</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Server Public Key</td>
+    <td>bytes</td>
+    <td>Diffie-Hellman public key, in SubjectPublicKeyInfo format with PEM encoding.</td>
+  </tr>
+</table>
+
+For example, a valid SERVER_KEX_ID packet should look something like this:
+```
+-----BEGIN PUBLIC KEY-----
+MIIBIDCBlQYJKoZIhvcNAQMBMIGHAoGBAOcrCbO0xRkVhwXNR0x27pRT+urJV83/
+aO0+eZir5zB+PH5TmoQf+fx/7V3hqwfwUxqODwfLSj4EaKxL8xO66UPCzX435zLM
+i/R/MlDsz9HnydPNTVVI9N+qBFKYaeJu/BsSFg3Ribx4+ZLBo7BrWnSFuqQsiz3s
+FFSjfdwzVjsPAgECA4GFAAKBgQCAmW2AwjoL+zpsVsewcnlD41IHrbnuGU/9FwOP
+WWH+jbtH0poXoOxIOicvG4PIQ4wLkfwcOP627hkNbRlMgXLNe0HfcV294DxAZPI9
+NPx+BYqaaMzroE2Quz5V9vp3Apmp2J7OYvvOneFmU87PyomBZJj0Ed3BRfA6J0F+
+C0GggA==
+-----END PUBLIC KEY-----
+```
+
+**From this point forward, all further communications between the server and client are fully encrypted.**

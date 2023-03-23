@@ -67,6 +67,12 @@ The FmLTP handshake consists of three main portions: the version exchange, the e
 
 # Packets
 ## Version Exchange
+The version exchange portion of the handshake serves many purposes. On paper, the version exchange portion is responsible for the first two points listed in the introduction; making sure the client is FlexMusic-compatible and that the version of the client is compatible with the server. In practice, this portion alone will filter out most, if not all:
+
+- Incompatible/old FlexMusic clients (on newer servers)
+- Incompatible/new FlexMusic clients (on older servers)
+- Non-FlexMusic connections
+
 ### SERVER_VEX_INIT
 This is the very first packet sent in the handshake. This packet is sent by the server to initiate the handshake, and should be used by the client to manage version compatibility. Once a TCP connection is established, this packet should be sent by the server immediately afterwards.
 
@@ -172,3 +178,4 @@ MIGHAoGBAK0a7BmdPoU2/snNlwsT8oW1G76yUTABAGcwoiOTFbAe+XARtx+gkILH
 Z/f5KhcPuk4EijhOd17vqsXXCalSWlP4nh8RlLkqAFuQudvxwNxvAgEC
 -----END DH PARAMETERS-----
 ```
+_(note: the parameters above are for example purposes only. FlexMusic generates a new set of parameters everytime the server is launched.)_

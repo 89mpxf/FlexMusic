@@ -56,7 +56,7 @@ The FmLTP handshake consists of three main portions: the version exchange, the e
     <td>No</td>
   </tr>
   <tr>
-    <td>CLIENT_KEX_CHAL</td>
+    <td><a href="../docs/HANDSHAKE.md#client_kex_chal">CLIENT_KEX_CHAL</a></td>
     <td></td>
     <td>x</td>
     <td>Yes</td>
@@ -260,7 +260,29 @@ NPx+BYqaaMzroE2Quz5V9vp3Apmp2J7OYvvOneFmU87PyomBZJj0Ed3BRfA6J0F+
 C0GggA==
 -----END PUBLIC KEY-----
 ```
+_(note: the public key above is for example purposes only.)_
 
 **From this point forward, all further communications between the server and client are fully encrypted.**
 
 **From this point forward, read all packet tables as what is to be encrypted with the session's Fernet cipher before being sent.**
+
+### CLIENT_KEX_CHAL
+This is the first encrypted packet sent during the handshake. This packet's main purpose is to ensure that both the server and the client have the same cipher. The client does this by sending the value of the server's SERVER_VEX_INIT packet back to the server to check it against itself.
+
+<table>
+  <tr>
+    <th>Field</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Server's SERVER_VEX_INIT</td>
+    <td>str</td>
+    <td>The value of the server's SERVER_VEX_INIT packet as a string.</td>
+  </tr>
+</table>
+
+For example, assuming the server's version was v1.0.0, the CLIENT_KEX_CHAL should look something like this (before being encrypted):
+```
+FlexMusic Server,1.0.0
+```

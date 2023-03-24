@@ -1,5 +1,6 @@
 # Begin FlexMusic
 server.conf
+auth
 .vscode
 
 # Begin default Python .gitignore template

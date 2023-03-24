@@ -6,6 +6,7 @@ from socket import socket
 from ..util import log
 from ..session.session_manager import SessionManager
 from ..handshake import HandshakeHandler
+from ..protocol.com import Interpreter
 
 class Session(Thread):
     def __init__(self, client: socket, address: tuple[str, int], server_compat_signature: tuple[str, int, int, int], keyring: tuple, session_manager: SessionManager, config: dict, debug: bool = False):
@@ -22,6 +23,7 @@ class Session(Thread):
         self.id = None
 
         self.handshake_handler = None
+        self.fmltp_interpreter = None
 
     def run(self):
         if self.debug:
@@ -37,6 +39,17 @@ class Session(Thread):
             self.client.close()
             self.session_manager.remove_session(self)
             return
+        if self.debug:
+            log(f"session-{self.id}", "Handshake successful. Initializing FmLTP interpreter...")
+        self.fmltp_interpreter = Interpreter(self.client, self.address, cipher, self.config, self.id, self.debug)
+        if self.debug:
+            log(f"session-{self.id}", "Starting FmLTP interpreter...")
+        self.client.settimeout(None)
+        self.fmltp_interpreter.run()
+        if self.debug:
+            log(f"session-{self.id}", "FmLTP interpreter stopped. Closing connection.")
+        self.client.close()
+        self.session_manager.remove_session(self)
         return
 
     # Session Manager Hook

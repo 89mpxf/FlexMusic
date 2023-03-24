@@ -33,8 +33,8 @@ class Interpreter:
                         log(f"session-{self.id}/interpreter", f"Received QUIT command.")
                     if len(args) > 0:
                         if self.debug:
-                            log(f"session-{self.id}/interpreter", f"Command QUIT returned 401.")
-                        self.client.send(self.cipher.encrypt("401 Too many arguments passed.\r\n".encode()))
+                            log(f"session-{self.id}/interpreter", f"Command QUIT returned 410.")
+                        self.client.send(self.cipher.encrypt("410 Too many arguments passed.\r\n".encode()))
                     else:
                         if self.debug:
                             log(f"session-{self.id}/interpreter", f"Command QUIT returned 200.")
@@ -46,12 +46,12 @@ class Interpreter:
 
                     if len(args) > 2:
                         if self.debug:
-                            log(f"session-{self.id}/interpreter", f"Command AUTH returned 401.")
-                        self.client.send(self.cipher.encrypt("401 Too many arguments passed.\r\n".encode()))
+                            log(f"session-{self.id}/interpreter", f"Command AUTH returned 410.")
+                        self.client.send(self.cipher.encrypt("410 Too many arguments passed.\r\n".encode()))
                     elif len(args) < 2:
                         if self.debug:
-                            log(f"session-{self.id}/interpreter", f"Command AUTH returned 402.")
-                        self.client.send(self.cipher.encrypt("402 Too few arguments passed.\r\n".encode()))
+                            log(f"session-{self.id}/interpreter", f"Command AUTH returned 411.")
+                        self.client.send(self.cipher.encrypt("411 Too few arguments passed.\r\n".encode()))
                     else:
                         username = args[0]
                         password = args[1]
@@ -103,8 +103,8 @@ class Interpreter:
                         log(f"session-{self.id}/interpreter", f"Received QUIT command.")
                     if len(args) > 0:
                         if self.debug:
-                            log(f"session-{self.id}/interpreter", f"Command QUIT returned 401.")
-                        self.client.send(self.cipher.encrypt("401 Too many arguments passed.\r\n".encode()))
+                            log(f"session-{self.id}/interpreter", f"Command QUIT returned 410.")
+                        self.client.send(self.cipher.encrypt("410 Too many arguments passed.\r\n".encode()))
                     else:
                         if self.debug:
                             log(f"session-{self.id}/interpreter", f"Command QUIT returned 200.")

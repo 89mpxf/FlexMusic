@@ -15,7 +15,7 @@ The FmLTP handshake consists of three main portions: the version exchange, the e
 <table>
   <tr>
     <th>Phase</th>
-    <th>Packet Type</th>
+    <th>Packet/Message Type</th>
     <th>Server</th>
     <th>Client</th>
     <th>Encrypted</th>
@@ -62,7 +62,7 @@ The FmLTP handshake consists of three main portions: the version exchange, the e
     <td>Yes</td>
   </tr>
   <tr>
-    <td>SERVER_KEX_FINAL</td>
+    <td><a href="../docs/HANDSHAKE.md#interpreter-ready-message">"Interpreter Ready." message</a></td>
     <td>x</td>
     <td></td>
     <td>Yes</td>

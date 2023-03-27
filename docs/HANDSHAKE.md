@@ -21,7 +21,7 @@ The FmLTP handshake consists of three main portions: the version exchange, the e
     <th>Encrypted</th>
   </tr>
   <tr>
-    <td colspan="5"><i>client establishes TCP connection with server</li></td>
+    <td colspan="5"><i>client establishes TCP connection with server</i></li></td>
   </tr>
   <tr>
     <td rowspan="2"><a href="../docs/HANDSHAKE.md#version_exchange">Version Exchange</a></td>
@@ -68,7 +68,7 @@ The FmLTP handshake consists of three main portions: the version exchange, the e
     <td>Yes</td>
   </tr>
   <tr>
-    <td>Authentication Phase</td>
+    <td><a href="../docs/HANDSHAKE.md#authentication-phase">Authentication Phase</a></td>
     <td colspan="4"><i>Not implemented yet</i></td>
   </tr>
 </table>
@@ -287,8 +287,10 @@ For example, assuming the server's version was v1.0.0, the CLIENT_KEX_CHAL shoul
 FlexMusic Server,1.0.0
 ```
 
+**From this point forward, all data will be sent to the server in the form of FmLTP operatives/commands, and all further responses from the server will be in the form of status codes and messages.**
+
 ### "Interpreter Ready." message
-Assuming that the server receives and successfully decrypts the previous packet, and the value of the previous packet matches the expected value, the server will then pass the session to the FmLTP interpreter. This message is the FmLTP's interpreter's first message, and it is intended to inform the client that the server is ready to start receiving commands. **From this point forward, all data will be sent to the server in the form of FmLTP operatives/commands, and all further responses from the server will be in the form of status codes and messages.**
+Assuming that the server receives and successfully decrypts the previous packet, and the value of the previous packet matches the expected value, the server will then pass the session to the FmLTP interpreter. This message is the FmLTP's interpreter's first message, and it is intended to inform the client that the server is ready to start receiving commands.
 
 If the server's authentication mode is set to `none`, the server should respond like this:
 ```
@@ -302,3 +304,10 @@ However, if the server's is set to anything other than `none` (i.e. `auth` or `s
 Authentication required.
 ```
 The `Authentication required.` line indicates that the FmLTP interpreter has been restricted to what is known as **lockdown mode**. In this state, the server will only accept `AUTH`, `HELP`, and `QUIT` commands.
+
+_(note: more information regarding the status codes in this specific message can be found in sections 10x-12x [here](https://github.com/89mpxf/FlexMusic/blob/main/docs/STATUS_CODES.md#1xx-interpreter-startup--lockdown-mode-specific).)_
+
+## Authentication Phase
+At this point, we have addressed the first three points in the introduction. There is only one thing left to do, and that is ensuring the client is authenticated to run FmLTP commands/operatives. If the FlexMusic server that the client is connecting to has disabled authentication, as described in [previous section](../docs/HANDSHAKE.md#interpreter-ready-message), then you can skip this phase of the handshake entirely.
+
+Due to it's optionality by design, this phase will sometimes not be apart of the handshake at all. However, when authentication is required by the server, it should be handled before further commands/operatives are passed to the server. Hence, **it should still be treated as a part of the handshake.**

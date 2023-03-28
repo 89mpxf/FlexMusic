@@ -4,7 +4,7 @@ from bcrypt import checkpw
 from base64 import b64decode
 
 # Import local dependencies
-from ..util import log
+from ..util import log, print_with_time
 
 class Interpreter:
     def __init__(self, client: socket, address: tuple[str, int], cipher, config: dict, _id: int, debug: bool = False):
@@ -96,6 +96,10 @@ class Interpreter:
         else:
             self.client.send(self.cipher.encrypt("100 FmLTP/1.0 Intepreter Ready\r\n".encode()))
             auth = True
+        if self.current_user is None:
+            print_with_time(f"Accepted connection from {self.address[0]}:{self.address[1]}.")
+        else:
+            print_with_time(f"Accepted connection from {self.current_user} at {self.address[0]}:{self.address[1]}.")
         while auth:
             match self.cipher.decrypt(self.client.recv(1024)).decode().strip().split(" "):
                 case ["QUIT", *args]:

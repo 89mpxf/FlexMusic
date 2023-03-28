@@ -23,9 +23,9 @@ def bootstrap_server(compat_signature: tuple[str, int, int, int]):
     if not config:
         print("FlexMusic Server failed to start.\nAn error occured during configuration loading.")
         exit(1)
+    if debug:
+        log("bootstrap", f"Authentication method is set to '" + config["auth_method"] + "'.")
     if config["auth_method"] == "auth":
-        if debug:
-            log("bootstrap", "Authentication method is set to 'auth'.")
         config["auth_table"] = load_auth_table(config["auth_min_password_length"], debug)
         if not config["auth_table"]:
             print("FlexMusic Server failed to start.\nAn error occured while loading the authentication table.")

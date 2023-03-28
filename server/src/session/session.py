@@ -3,7 +3,7 @@ from threading import Thread
 from socket import socket
 
 # Import local dependencies
-from ..util import log
+from ..util import log, print_with_time
 from ..session.session_manager import SessionManager
 from ..handshake import HandshakeHandler
 from ..protocol.com import Interpreter
@@ -48,6 +48,7 @@ class Session(Thread):
         self.fmltp_interpreter.run()
         if self.debug:
             log(f"session-{self.id}", "FmLTP interpreter stopped. Closing connection.")
+        print_with_time(f"Connection from {self.address[0]}:{self.address[1]} closed.")
         self.client.close()
         self.session_manager.remove_session(self)
         return

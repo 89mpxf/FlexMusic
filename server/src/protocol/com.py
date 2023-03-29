@@ -67,12 +67,11 @@ class Interpreter:
         if self.config["auth_method"] != "none":
             self.client.send(self.cipher.encrypt("100 FmLTP/1.0 Intepreter Ready.\r\nAuthentication required.\r\n".encode()))
             self.run_lockdown()
-            if self.current_user is None:
-                return
-            if self.debug:
-                log(f"session-{self.id}/interpreter", f"Interpreter broke free from lockdown mode successfully.")
-            auth = True
-            self.interpreter_mode = "normal"
+            if self.current_user is not None:
+                if self.debug:
+                    log(f"session-{self.id}/interpreter", f"Interpreter broke free from lockdown mode successfully.")
+                auth = True
+                self.interpreter_mode = "normal"
         else:
             self.client.send(self.cipher.encrypt("100 FmLTP/1.0 Intepreter Ready\r\n".encode()))
             auth = True
@@ -81,5 +80,8 @@ class Interpreter:
             print_with_time(f"Accepted connection from {self.address[0]}:{self.address[1]}.")
         else:
             print_with_time(f"Accepted connection from {self.current_user} at {self.address[0]}:{self.address[1]}.")
-        return self._core()
+        if auth:
+            return self._core()
+        else:
+            return
 

@@ -121,3 +121,15 @@ Status codes are generally grouped by their first and second digits. The first d
     <td>Too few arguments passed.</td>
   </tr>
 </table>
+
+### 42x (Command Failure)
+<table>
+  <tr>
+    <th>Code</th>
+    <th>Reason</th>
+  </tr>
+  <tr>
+    <td>420</td>
+    <td>Command error.</td>
+  </tr>
+</table>

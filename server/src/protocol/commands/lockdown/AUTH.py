@@ -5,6 +5,10 @@ from bcrypt import checkpw
 from ....util import log
 from ...com import InterpreterReturn
 
+# Metadata values
+__usage = "<username> <password>"
+__help_text = "Authenticates this connection"
+
 def _authenticate(interpreter, username: str, password: str) -> tuple[bool, str | None]:
     try:
         return checkpw(password.encode(), interpreter.config["auth_table"][username]), username

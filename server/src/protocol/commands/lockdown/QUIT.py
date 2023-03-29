@@ -2,6 +2,9 @@
 from ....util import log
 from ...com import InterpreterReturn
 
+# Metadata values
+__help_text = "Closes connection to server"
+
 def main(interpreter):
     if interpreter.debug:
         log(f"session-{interpreter.id}/interpreter", f"Command QUIT returned 200.")

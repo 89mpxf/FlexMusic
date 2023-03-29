@@ -1,6 +1,7 @@
 # Import dependencies
 from socket import socket
 from re import findall
+import traceback
 
 # Import local dependencies
 from ..util import log, print_with_time
@@ -29,19 +30,25 @@ class Interpreter:
                 self.commands[self.interpreter_mode][input[0]](self, *input[1:])
             except InterpreterReturn:
                 return
-            except KeyError:
-                self.client.send(self.cipher.encrypt("400 Invalid command or operative.\r\n".encode()))
+            except KeyError as e:
+                if e.__traceback__.tb_next is None:
+                    self.client.send(self.cipher.encrypt("400 Invalid command or operative.\r\n".encode()))
+                else:
+                    raise e
             except TypeError as e:
-                try:
-                    c = [int(i) for i in findall(r"\d+", str(e))]
-                    if c[0] < c[1]:
-                        self.client.send(self.cipher.encrypt("410 Too many arguments passed.\r\n".encode()))
+                if e.__traceback__.tb_next is None:
+                    try:
+                        c = [int(i) for i in findall(r"\d+", str(e))]
+                        if c[0] < c[1]:
+                            self.client.send(self.cipher.encrypt("410 Too many arguments passed.\r\n".encode()))
+                            if self.debug:
+                                log(f"session-{self.id}/interpreter", f"Command {input[0]} returned 410.")
+                    except:
+                        self.client.send(self.cipher.encrypt("411 Too few arguments passed.\r\n".encode()))
                         if self.debug:
-                            log(f"session-{self.id}/interpreter", f"Command {input[0]} returned 410.")
-                except:
-                    self.client.send(self.cipher.encrypt("411 Too few arguments passed.\r\n".encode()))
-                    if self.debug:
-                        log(f"session-{self.id}/interpreter", f"Command {input[0]} returned 411.")
+                            log(f"session-{self.id}/interpreter", f"Command {input[0]} returned 411.")
+                else:
+                    raise e
 
     def run_lockdown(self):
         if self.debug:

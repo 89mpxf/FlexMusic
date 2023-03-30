@@ -8,8 +8,10 @@ from ..runtime import runtime
 from .configuration import load_configuration
 from ..crypto import generate_parameters
 from .auth import load_auth_table
+from ..subprogram.load import load_subprogram
 
 def bootstrap_server(compat_signature: tuple[str, int, int, int]):
+    load_subprogram(compat_signature)
     print("FlexMusic Media Server is starting...")
     debug = "--debug" in argv
     if debug:

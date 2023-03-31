@@ -15,24 +15,30 @@ def auth_prompt(min_password_length: int, debug: bool = False) -> tuple[str, str
     try:
         while True:
             username = input("Username: ")
-            password = getpass("Password: ")
-            confirm_password = getpass("Confirm password: ")
-            if password == confirm_password:
-                if len(password) >= min_password_length:
-                    print("")
-                    while True:
-                        if (yn := input(f"Create user '{username}'? (y/n): ").lower()) == "y":
+            if len(username) >= 2 and len(username) <= 32:
+                if username.isalnum():
+                    password = getpass("Password: ")
+                    confirm_password = getpass("Confirm password: ")
+                    if password == confirm_password:
+                        if len(password) >= min_password_length:
                             print("")
-                            return (username, password)
-                        elif yn == "n":
-                            print("")
-                            break
+                            while True:
+                                if (yn := input(f"Create user '{username}'? (y/n): ").lower()) == "y":
+                                    print("")
+                                    return (username, password)
+                                elif yn == "n":
+                                    print("")
+                                    break
+                                else:
+                                    pass
                         else:
-                            pass
+                            print(f"\nPassword needs to be atleast {min_password_length} characters long. Please try again.\n")
+                    else:
+                        print("\nPasswords do not match. Please try again.\n")
                 else:
-                    print(f"\nPassword needs to be atleast {min_password_length} characters long. Please try again.\n")
+                    print("\nUsername must be alphanumeric. Please try again.\n")
             else:
-                print("\nPasswords do not match. Please try again.\n")
+                print("\nUsername must be between 2 and 32 characters long. Please try again.\n")
     except:
         if debug:
             log("bootstrap/auth/initial", "FATAL! Failed to prompt user for credentials.")

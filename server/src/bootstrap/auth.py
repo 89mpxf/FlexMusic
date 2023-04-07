@@ -25,6 +25,9 @@ def auth_prompt(min_password_length: int, debug: bool = False) -> tuple[str, str
                             while True:
                                 if (yn := input(f"Create user '{username}'? (y/n): ").lower()) == "y":
                                     print("")
+                                    print("Thank you! To create more users, manage users, or delete users,")
+                                    print("run this server with the '--auth-manager' switch.")
+                                    print("")
                                     return (username, password)
                                 elif yn == "n":
                                     print("")
@@ -62,13 +65,14 @@ def create_auth_table(min_password_length: int, debug: bool = False) -> bool:
             log("bootstrap/auth", "FATAL! Failed to create authentication table.")
         return False
 
-def load_auth_table(min_password_length: int, debug: bool = False) -> dict | None:
+def load_auth_table(min_password_length: int, debug: bool = False, _cancel_create_auth_table: bool = False) -> dict | None:
     if debug:
         log("bootstrap/auth", "Loading authentication table...")
     if not exists("auth") or open("auth", "r").read() == "":
         if debug:
             log("bootstrap/auth", "No authentication table found.")
-        create_auth_table(min_password_length, debug)
+        if not _cancel_create_auth_table:
+            create_auth_table(min_password_length, debug)
     auth_table = {}
     try:
         with open("auth", "r") as f:

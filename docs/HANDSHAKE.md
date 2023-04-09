@@ -311,3 +311,34 @@ _(note: more information regarding the status codes in this specific message can
 At this point, we have addressed the first three points in the introduction. There is only one thing left to do, and that is ensuring the client is authenticated to run FmLTP commands/operatives. If the FlexMusic server that the client is connecting to has disabled authentication, as described in [previous section](../docs/HANDSHAKE.md#interpreter-ready-message), then you can skip this phase of the handshake entirely.
 
 Due to it's optionality by design, this phase will sometimes not be apart of the handshake at all. However, when authentication is required by the server, it should be handled before further commands/operatives are passed to the server. Hence, **it should still be treated as a part of the handshake.**
+
+### "AUTH" command
+If authentication is required by the server, the interpreter will start in lockdown mode. The **AUTH command** is exclusive to this mode and is used by the client to authenticate to the server.
+
+<table>
+  <tr>
+    <th>Field</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>AUTH</td>
+    <td>Literal[str]</td>
+    <td>The command.</td>
+  </tr>
+  <tr>
+    <td>Username</td>
+    <td>str</td>
+    <td>The username to authenticate to the server as.</td>
+  </tr>
+  <tr>
+    <td>Password</td>
+    <td>str</td>
+    <td>The password associated with the username desired.</td>
+  </tr>
+</table>
+
+For example, a client authenticating as the user ``user`` with the password ``12345678`` should send the following AUTH command:
+```
+AUTH user 12345678
+```

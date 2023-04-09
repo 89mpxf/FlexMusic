@@ -41,7 +41,7 @@ def generate_parameters(ksize: int, debug: bool = False) -> tuple[dh.DHParameter
     return tuple([parameters, parameter_bytes, private_key, public_key, public_key_bytes])
 
 @staticmethod
-def process_client_key(client_key_bytes: bytes, session_id: int, server_keyring: tuple[dh.DHParameters, bytes, dh.DHPrivateKey, dh.DHPublicKey, bytes], debug: bool = False):
+def process_client_key(client_key_bytes: bytes, session_id: int, server_keyring: tuple[dh.DHParameters, bytes, dh.DHPrivateKey, dh.DHPublicKey, bytes], debug: bool = False) -> Fernet | None:
     """Processes the Diffie-Hellman key exchange between the server and the client and generates the encryption/decryption cipher.\n
     This function is called by the handshake handler for the session and should not be called manually."""
     try:

@@ -3,6 +3,9 @@ class SessionManager:
         self._sessions = []
         self._next_id = 0
 
+    def __len__(self):
+        return len(self._sessions)
+
     def create_session(self, session):
         self._sessions.append(session)
         session._smh(self._next_id)

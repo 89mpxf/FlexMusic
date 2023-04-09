@@ -36,6 +36,12 @@ default_configuration = [
     "# NOTE: If this value is set to 0, the server will wait indefinitely for a client to respond during this time. This is not recommended.",
     "handshake_client_timeout = 5",
     "",
+    "# Maximum concurrent connections",
+    "# By default, this is set to 32. This is the maximum number of connections the server will handle at any given time.",
+    "# NOTE: Stability with values higher than the default is not guaranteed, though should work in theory.",
+    "# NOTE: This value must be greater than 0.",
+    "max_connections = 32",
+    ""
 ]
 
 def create_configuration(debug: bool = False) -> bool:
@@ -83,6 +89,12 @@ def validate_configuration(config: dict, debug: bool = False) -> dict | None:
     config["handshake_client_timeout"] = int(config["handshake_client_timeout"])
     if config["handshake_client_timeout"] <= 0:
         config["handshake_client_timeout"] = None
+
+    config["max_connections"] = int(config["max_connections"])
+    if config["max_connections"] <= 0:
+        if debug:
+            log("bootstrap/configuration/validator", "FATAL! Invalid maximum connections value.")
+        return None
     
     return config
 

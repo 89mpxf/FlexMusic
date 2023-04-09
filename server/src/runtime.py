@@ -17,9 +17,14 @@ def runtime(server: socket, compat_signature: tuple[str, int, int, int], keyring
     splash(config, compat_signature, debug)
     if debug:
         log("runtime", "Entering runtime loop...")
-    server.listen(5)
+    server.listen(config["max_connections"])
     while True:
         conn, addr = server.accept()
+        if len(session_manager) + 1 > config["max_connections"]:
+            if debug:
+                log("runtime/loop", "Connection rejected from " + addr[0] + ":" + str(addr[1]) + " (max connections reached)")
+            conn.close()
+            continue
         if debug:
             log("runtime/loop", "Connection accepted from " + addr[0] + ":" + str(addr[1]))
         session = Session(conn, addr, compat_signature, keyring, session_manager, config, debug)

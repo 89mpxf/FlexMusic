@@ -1,6 +1,7 @@
 # Import dependencies
 from threading import Thread
 from socket import socket
+from cryptography.fernet import InvalidToken
 
 # Import local dependencies
 from ..util import log, print_with_time
@@ -45,7 +46,13 @@ class Session(Thread):
         if self.debug:
             log(f"session-{self.id}", "Starting FmLTP interpreter...")
         self.client.settimeout(None)
-        self.fmltp_interpreter.run()
+        try:
+            self.fmltp_interpreter.run()
+        except InvalidToken:
+            if self.debug:
+                log(f"session-{self.id}", "Session encryption violation occured. Closing connection.")
+        except:
+            pass
         if self.debug:
             log(f"session-{self.id}", "FmLTP interpreter stopped. Closing connection.")
         print_with_time(f"Connection from {self.address[0]}:{self.address[1]} closed.")

@@ -5,6 +5,9 @@ class SessionManager:
 
     def __len__(self):
         return len(self._sessions)
+    
+    def __iter__(self):
+        return iter(self._sessions)
 
     def create_session(self, session):
         self._sessions.append(session)

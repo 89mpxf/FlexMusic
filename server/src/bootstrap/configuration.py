@@ -29,7 +29,12 @@ default_configuration = [
     "# NOTE: Lowering this value will make the FlexMusic server less secure, but may increase performance",
     "# NOTE: Clients refer to this value when generating their own keypairs",
     "key_size = 2048",
-    ""
+    "",
+    "# Handshake client timeout",
+    "# By default, this is set to 5. This is the number of seconds the server will wait for a client to respond prior to the interpreter starting.",
+    "# NOTE: If this value is set to 0, the server will wait indefinitely for a client to respond during this time. This is not recommended.",
+    "handshake_client_timeout = 5",
+    "",
 ]
 
 def create_configuration(debug: bool = False) -> bool:
@@ -73,7 +78,11 @@ def validate_configuration(config: dict, debug: bool = False) -> dict | None:
         if debug:
             log("bootstrap/configuration/validator", "FATAL! Invalid minimum password length.")
         return None
-
+    
+    config["handshake_client_timeout"] = int(config["handshake_client_timeout"])
+    if config["handshake_client_timeout"] <= 0:
+        config["handshake_client_timeout"] = None
+    
     return config
 
 def load_configuration(debug: bool = False):

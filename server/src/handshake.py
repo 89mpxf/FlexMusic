@@ -16,7 +16,7 @@ class HandshakeHandler:
         self.debug: bool = debug
 
     def handshake(self):
-        self.client.settimeout(5)
+        self.client.settimeout(self.config["handshake_client_timeout"])
         try:
             if self.debug:
                 log(f"session-{self.id}/handshake", "Starting handshake...")

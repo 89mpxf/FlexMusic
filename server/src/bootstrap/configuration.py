@@ -108,7 +108,18 @@ def load_configuration(debug: bool = False):
         config[key] = value
     if debug:
         log("bootstrap/configuration", "Validating configuration...")
-    config = validate_configuration(config, debug)
+    try:
+        config = validate_configuration(config, debug)
+    except KeyError as e:
+        if debug:
+            log("bootstrap/configuration", f"FATAL! Configuration missing {e.__str__()} key.")
+        return None
+    except ValueError as e:
+        if debug:
+            log("bootstrap/configuration", f"FATAL! Configuration value type conversion failed.")
+        return None
+    except:
+        raise
     if not config:
         return None
     if debug:

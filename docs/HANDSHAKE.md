@@ -68,8 +68,17 @@ The FmLTP handshake consists of three main portions: the version exchange, the e
     <td>Yes</td>
   </tr>
   <tr>
-    <td><a href="../docs/HANDSHAKE.md#authentication-phase">Authentication Phase</a></td>
-    <td colspan="4"><i>Not implemented yet</i></td>
+    <td rowspan="2"><a href="../docs/HANDSHAKE.md#authentication-phase">Authentication Phase</a></td>
+    <td><a href="../docs/HANDSHAKE.md#auth-command">"AUTH" command</a></td>
+    <td></td>
+    <td>x</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td><a href="../docs/HANDSHAKE.md#150151-response">150/151 Response</a></td>
+    <td>x</td>
+    <td></td>
+    <td>Yes</td>
   </tr>
 </table>
 
@@ -322,9 +331,9 @@ If authentication is required by the server, the interpreter will start in lockd
     <th>Description</th>
   </tr>
   <tr>
-    <td>AUTH</td>
+    <td>Command</td>
     <td>Literal[str]</td>
-    <td>The command.</td>
+    <td>"AUTH"</td>
   </tr>
   <tr>
     <td>Username</td>
@@ -342,3 +351,20 @@ For example, a client authenticating as the user ``user`` with the password ``12
 ```
 AUTH user 12345678
 ```
+
+### 150/151 Response
+Once the client attempts to authenticate to the server via the AUTH command, the server will then respond with whether or not authentication succeeded. This is in the form of status messages, corresponding to status codes **150** and **151**.
+
+For example, if the client successfully authenticates with the server, the server will respond with the following message:
+```
+150 Authentication successful.
+```
+This response signifies that the interpreter has exited lockdown mode and authenticated was successful. **At this point, the handshake has fully concluded.**
+
+However, if the client fails to authenticate with the server, the server will respond with the following message:
+```
+151 Authentication failed.
+```
+This response signifies that the authentication attempt was unsuccessful. This could mean that the user requested does not exist, or that the password provided was incorrect. Authentication can be reattempted a set number of times defined by the server (3 by default, however, the server will not present this information to the client) before the connection will be automatically closed.
+
+It should be noted that if the client fails to authenticate with the server by means of an unrelated factor, such as the client passing the AUTH command incorrectly, it will respond with a different message, and a different status code. For more information as to possible failure status codes, click [here](https://github.com/89mpxf/FlexMusic/blob/main/docs/STATUS_CODES.md#4xx-failure).

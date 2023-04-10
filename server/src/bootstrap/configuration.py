@@ -41,13 +41,22 @@ default_configuration = [
     "# NOTE: Stability with values higher than the default is not guaranteed, though should work in theory.",
     "# NOTE: This value must be greater than 0.",
     "max_connections = 32",
-    ""
+    "",
+    "# Handshake failure cooldown",
+    "# By default, this is set to 300. This is the number, in seconds, the server will wait before allowing a client to reattempt a failed handshake.",
+    "# Clients are flagged on a per-IP basis, and connections from the same IP will be blocked for this duration.",
+    "# This is an additional security measure put in place to prevent spam access to the server.",
+    "# NOTE: Setting this value to 0 will disable this feature. This is highly discouraged.",
+    "handshake_failure_cooldown = 300",
+    "",
 ]
 
 def create_configuration(debug: bool = False) -> bool:
     if debug:
         log("bootstrap/configuration/creator", "Creating configuration from default template...")
     try:
+        if debug:
+            log("bootstrap/configuration/creator", "Template size: " + str(sum([int(len(line) + 1) for line in default_configuration])) + " bytes, " + str(len(default_configuration)) + " lines.")
         with open("server.conf", "w") as file:
             file.writelines([str(line + "\n") for line in default_configuration])
             file.close()
@@ -95,6 +104,10 @@ def validate_configuration(config: dict, debug: bool = False) -> dict | None:
         if debug:
             log("bootstrap/configuration/validator", "FATAL! Invalid maximum connections value.")
         return None
+    
+    config["handshake_failure_cooldown"] = int(config["handshake_failure_cooldown"])
+    if config["handshake_failure_cooldown"] <= 0:
+        config["handshake_failure_cooldown"] = None
     
     return config
 

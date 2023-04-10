@@ -11,7 +11,7 @@ def runtime(server: socket, compat_signature: tuple[str, int, int, int], keyring
     if debug:
         log("runtime", "Runtime successfully started.")
         log("runtime", "Initializing session manager...")
-    session_manager = SessionManager()
+    session_manager = SessionManager(config["handshake_failure_cooldown"])
     if debug:
         log("runtime", "Displaying splash screen...")
     splash(config, compat_signature, debug)
@@ -24,6 +24,11 @@ def runtime(server: socket, compat_signature: tuple[str, int, int, int], keyring
             if len(session_manager) + 1 > config["max_connections"]:
                 if debug:
                     log("runtime/loop", "Connection rejected from " + addr[0] + ":" + str(addr[1]) + " (max connections reached)")
+                conn.close()
+                continue
+            if session_manager.check_flagged(addr[0]):
+                if debug:
+                    log("runtime/loop", "Connection rejected from " + addr[0] + ":" + str(addr[1]) + " (handshake failure cooldown active)")
                 conn.close()
                 continue
             if debug:

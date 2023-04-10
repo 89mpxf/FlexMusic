@@ -38,7 +38,7 @@ class Session(Thread):
             if self.debug:
                 log(f"session-{self.id}", "Handshake failed. Closing connection.")
             self.client.close()
-            self.session_manager.remove_session(self)
+            self.session_manager.flag_session(self)
             return
         if self.debug:
             log(f"session-{self.id}", "Handshake successful. Initializing FmLTP interpreter...")

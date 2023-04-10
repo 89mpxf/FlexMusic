@@ -5,8 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Automatic Dependency Manifest Generation
-        id: server-admg
+      - name: AutomaticDependencyManifestGeneration
       
         uses: ekvanox/pipreqs-action@master
 

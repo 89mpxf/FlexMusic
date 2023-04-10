@@ -41,7 +41,7 @@ def runtime(server: socket, compat_signature: tuple[str, int, int, int], keyring
             session = Session(conn, addr, compat_signature, keyring, session_manager, config, debug)
             session_manager.create_session(session)
             session.start()
-            sleep(0.05)
+            sleep(0.06)
         except KeyboardInterrupt:
             if debug:
                 log("runtime/loop", "Keyboard interrupt detected. Initiating shutdown...")
@@ -49,6 +49,7 @@ def runtime(server: socket, compat_signature: tuple[str, int, int, int], keyring
                 if debug:
                     log("runtime/loop", "Closing session #" + str(session.id) + f" ({session.address[0]}:{str(session.address[1])})...")
                 session.client.close()
+                session.join()
             if debug:
                 log("runtime/loop", "Closing server socket...")
             server.close()

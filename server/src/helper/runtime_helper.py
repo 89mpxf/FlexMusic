@@ -57,5 +57,4 @@ class RuntimeHelper(Thread):
                             lines.append(session.fmltp_interpreter.current_user.ljust(username_offset) + f" {session.address[0]}:{session.address[1]}".ljust(address_offset) + " " + self.format_uptime_stats(session.start_time))
                         else:
                             lines.append("(unknown)".ljust(username_offset) + f" {session.address[0]}:{session.address[1]}".ljust(address_offset) + " " + self.format_uptime_stats(session.start_time))
-                    print(username_offset)
             print_with_time(*lines)

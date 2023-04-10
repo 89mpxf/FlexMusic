@@ -6,6 +6,8 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Automatic Dependency Manifest Generation
+        id: server-admg
+      
         uses: ekvanox/pipreqs-action@master
 
         with:

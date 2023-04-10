@@ -1,5 +1,6 @@
 # Import dependencies
 from socket import socket
+from time import sleep
 
 # Import local dependencies
 from .util import log
@@ -40,6 +41,7 @@ def runtime(server: socket, compat_signature: tuple[str, int, int, int], keyring
             session = Session(conn, addr, compat_signature, keyring, session_manager, config, debug)
             session_manager.create_session(session)
             session.start()
+            sleep(0.05)
         except KeyboardInterrupt:
             if debug:
                 log("runtime/loop", "Keyboard interrupt detected. Initiating shutdown...")

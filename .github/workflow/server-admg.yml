@@ -11,4 +11,4 @@ jobs:
         with:
           PROJECT_PATH: server
           REQUIREMENT_PATH: server/requirements.txt
-          COMMIT_MESSAGE: "My custom commit message"
+          COMMIT_MESSAGE: "Generate server requirements.txt"

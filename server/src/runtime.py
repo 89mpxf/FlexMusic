@@ -6,6 +6,7 @@ from .util import log
 from .splash import splash
 from .session.session_manager import SessionManager
 from .session.session import Session
+from .helper.runtime_helper import RuntimeHelper
 
 def runtime(server: socket, compat_signature: tuple[str, int, int, int], keyring: tuple, config: dict, debug: bool = False):
     if debug:
@@ -15,6 +16,9 @@ def runtime(server: socket, compat_signature: tuple[str, int, int, int], keyring
     if debug:
         log("runtime", "Displaying splash screen...")
     splash(config, compat_signature, debug)
+    if debug:
+        log("runtime", "Starting runtime helper...")
+    runtime_helper = RuntimeHelper(compat_signature, session_manager, config, debug).start()
     if debug:
         log("runtime", "Entering runtime loop...")
     server.listen(config["max_connections"])

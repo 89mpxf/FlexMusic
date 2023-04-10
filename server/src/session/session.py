@@ -2,6 +2,7 @@
 from threading import Thread
 from socket import socket
 from cryptography.fernet import InvalidToken
+from time import time
 
 # Import local dependencies
 from ..util import log, print_with_time
@@ -22,11 +23,13 @@ class Session(Thread):
         self.config: dict = config
         self.debug: bool = debug
         self.id = None
+        self.start_time: float = None
 
         self.handshake_handler = None
         self.fmltp_interpreter = None
 
     def run(self):
+        self.start_time = time()
         if self.debug:
             log(f"session-{self.id}", "Session started for " + self.address[0] + ":" + str(self.address[1]))
             log(f"session-{self.id}", "Initializing handshake handler...")

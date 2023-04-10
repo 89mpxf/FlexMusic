@@ -46,9 +46,15 @@ default_configuration = [
     "# By default, this is set to 300. This is the number, in seconds, the server will wait before allowing a client to reattempt a failed handshake.",
     "# Clients are flagged on a per-IP basis, and connections from the same IP will be blocked for this duration.",
     "# This is an additional security measure put in place to prevent spam access to the server.",
+    "# NOTE: Handshake failure does not refer to clients failing authentication.",
     "# NOTE: Setting this value to 0 will disable this feature. This is highly discouraged.",
     "handshake_failure_cooldown = 300",
     "",
+    "# Runtime overload mitigation",
+    "# By default, this is set to 50. This is the number, in milliseconds, the server will wait between accepting connections.",
+    "# This prevents the server from being overloaded by too many connections at once.",
+    "# NOTE: Setting this value to 0 will disable this feature. This is highly discouraged.",
+    "runtime_overload_mitigation = 50",
 ]
 
 def create_configuration(debug: bool = False) -> bool:
@@ -108,6 +114,10 @@ def validate_configuration(config: dict, debug: bool = False) -> dict | None:
     config["handshake_failure_cooldown"] = int(config["handshake_failure_cooldown"])
     if config["handshake_failure_cooldown"] <= 0:
         config["handshake_failure_cooldown"] = None
+
+    config["runtime_overload_mitigation"] = int(config["runtime_overload_mitigation"])
+    if config["runtime_overload_mitigation"] <= 0:
+        config["runtime_overload_mitigation"] = 0
     
     return config
 

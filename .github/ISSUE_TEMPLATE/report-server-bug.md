@@ -1,7 +1,7 @@
 ---
-name: Bug Report - Server
+name: Report server bug
 about: Report unexpected/undesired behavior from the FlexMusic server
-title: "[Server]"
+title: "[Server] (enter issue title)"
 labels: bug
 assignees: ''
 
@@ -21,4 +21,4 @@ Describe what actually happened when performing the steps listed above.
 Include the server's splash screen / output of `--version` here.
 
 **Additional information:**
-Include any additional information (that does not fit into any of the above categories) here.
+Include any additional information pertaining to the observed issue here.

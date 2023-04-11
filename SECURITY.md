@@ -6,4 +6,4 @@ Until FlexMusic enters alpha, and versioning has begun, please refer to the [off
 
 ## Reporting a Vulnerability
 
-Upon discovering a vulnerability in FlexMusic and/or the FmLTP protocol, please privately report steps to go about reproducing the vulnerability and its observable effects to [cooper@mpxf.men](mailto:cooper@mpxf.men). If the vulnerability reported can successfully be reproduced, the vulnerability will be publicly reported to the official FlexMusic repository, as well as additional security measures deemed neccesary on a per-occurence basis.
+Upon discovering a vulnerability in FlexMusic and/or the FmLTP protocol, please privately report steps to go about reproducing the vulnerability and its observable effects to [cooper@mpxf.men](mailto:cooper@mpxf.men), or, by drafting a security vulnerability report via the issues tab. If the vulnerability reported can successfully be reproduced, the vulnerability will be publicly reported to the official FlexMusic repository, as well as additional security measures deemed neccesary on a per-occurence basis.

@@ -1,4 +1,3 @@
-import platform
 from platform import system, release, python_version_tuple, python_implementation, python_compiler
 
 def box(lines: list[str]) -> list[str]:

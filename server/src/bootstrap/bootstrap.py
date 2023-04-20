@@ -17,16 +17,16 @@ def bootstrap_server(compat_signature: tuple[str, int, int, int]):
     if debug:
         log("bootstrap", "Debug mode activated.")
         log("bootstrap", "Now Starting FlexMusic Server.")
-        log("bootstrap", "Version: " + compat_signature[0])
-        log("bootstrap", "Compatibility Class: " + str(compat_signature[1]))
-        log("bootstrap", "Compatibility Stepping: " + str(compat_signature[2]))
-        log("bootstrap", "Compatibility Sub-stepping: " + str(compat_signature[3]))
+        log("bootstrap", f"Version: {compat_signature[0]}")
+        log("bootstrap", f"Compatibility Class: {compat_signature[1]}")
+        log("bootstrap", f"Compatibility Stepping: {compat_signature[2]}")
+        log("bootstrap", f"Compatibility Sub-stepping: {compat_signature[3]}")
     config = load_configuration(debug)
     if not config:
         print("FlexMusic Server failed to start.\nAn error occured during configuration loading.")
         exit(1)
     if debug:
-        log("bootstrap", f"Authentication method is set to '" + config["auth_method"] + "'.")
+        log("bootstrap", "Authentication method is set to '" + config["auth_method"] + "'.")
     if config["auth_method"] == "auth":
         config["auth_table"] = load_auth_table(config["auth_min_password_length"], debug)
         if not config["auth_table"]:

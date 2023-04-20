@@ -31,7 +31,7 @@ class Session(Thread):
     def run(self):
         self.start_time = time()
         if self.debug:
-            log(f"session-{self.id}", "Session started for " + self.address[0] + ":" + str(self.address[1]))
+            log(f"session-{self.id}", f"Session started for {self.address[0]}:{self.address[1]}.")
             log(f"session-{self.id}", "Initializing handshake handler...")
         self.handshake_handler = HandshakeHandler(self.client, self.address, self.server_compat_signature, self.keyring, self.config, self.id, self.debug)
         if self.debug:

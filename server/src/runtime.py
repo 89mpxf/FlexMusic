@@ -28,16 +28,16 @@ def runtime(server: socket, compat_signature: tuple[str, int, int, int], keyring
             conn, addr = server.accept()
             if len(session_manager) + 1 > config["max_connections"]:
                 if debug:
-                    log("runtime/loop", "Connection rejected from " + addr[0] + ":" + str(addr[1]) + " (max connections reached)")
+                    log("runtime/loop", f"Connection rejected from {addr[0]}:{addr[1]} (max connections reached)")
                 conn.close()
                 continue
             if session_manager.check_flagged(addr[0]):
                 if debug:
-                    log("runtime/loop", "Connection rejected from " + addr[0] + ":" + str(addr[1]) + " (handshake failure cooldown active)")
+                    log("runtime/loop", f"Connection rejected from {addr[0]}:{addr[1]} (handshake failure cooldown active)")
                 conn.close()
                 continue
             if debug:
-                log("runtime/loop", "Connection accepted from " + addr[0] + ":" + str(addr[1]))
+                log("runtime/loop", f"Connection accepted from {addr[0]}:{addr[1]}")
             session = Session(conn, addr, compat_signature, keyring, session_manager, config, debug)
             session_manager.create_session(session)
             session.start()
@@ -47,7 +47,7 @@ def runtime(server: socket, compat_signature: tuple[str, int, int, int], keyring
                 log("runtime/loop", "Keyboard interrupt detected. Initiating shutdown...")
             for session in session_manager:
                 if debug:
-                    log("runtime/loop", "Closing session #" + str(session.id) + f" ({session.address[0]}:{str(session.address[1])})...")
+                    log("runtime/loop", f"Closing session #{session.id} ({session.address[0]}:{session.address[1]})...")
                 session.client.close()
                 session.join()
             if debug:

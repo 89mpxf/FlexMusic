@@ -75,10 +75,10 @@ class HandshakeHandler:
 
         except TimeoutError:
             if self.debug:
-                log(f"session-{self.id}", "Client at " + self.address[0] + ":" + str(self.address[1]) + " timed out during handshake.")
+                log(f"session-{self.id}", f"Client at {self.address[0]}:{self.address[1]} timed out during handshake.")
             return None
         except:
             #raise
             if self.debug:
-                log(f"session-{self.id}", "Client at " + self.address[0] + ":" + str(self.address[1]) + " failed to complete handshake.")
+                log(f"session-{self.id}", f"Client at {self.address[0]}:{self.address[1]} failed to complete handshake.")
             return None

@@ -13,7 +13,6 @@ def box(lines: list[str]) -> list[str]:
             _ret.append("# " + lines[line-2] + " " * int(width - len(lines[line-2])) + " #")
     return _ret
 
-
 def splash(config: dict, compat_signature: tuple[str, int, int, int], debug: bool = False):
     lines = []
     _pyver = python_version_tuple()

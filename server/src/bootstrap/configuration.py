@@ -62,7 +62,7 @@ def create_configuration(debug: bool = False) -> bool:
         log("bootstrap/configuration/creator", "Creating configuration from default template...")
     try:
         if debug:
-            log("bootstrap/configuration/creator", "Template size: " + str(sum([int(len(line) + 1) for line in default_configuration])) + " bytes, " + str(len(default_configuration)) + " lines.")
+            log("bootstrap/configuration/creator", f"Template size: {sum([int(len(line) + 1) for line in default_configuration])} bytes, {len(default_configuration)} lines.")
         with open("server.conf", "w") as file:
             file.writelines([str(line + "\n") for line in default_configuration])
             file.close()
@@ -75,7 +75,7 @@ def create_configuration(debug: bool = False) -> bool:
         return False
     
 def validate_configuration(config: dict, debug: bool = False) -> dict | None:
-    conf_keys = ["host", "port", "key_size", "auth_method", "auth_min_password_length"]
+    conf_keys = [line.split("=")[0].strip() for line in default_configuration if line != "" and line[0] != "#"]
     for key in conf_keys:
         if key not in config:
             if debug:

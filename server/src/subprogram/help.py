@@ -1,7 +1,8 @@
 switches = {
     "--auth-manager": "Launches the FlexMusic server authentication manager",
     "--debug": "Launch the FlexMusic server in debug mode",
-    "--help": "Display this help message"
+    "--help": "Display this help message",
+    "--version": "Display the FlexMusic server version"
 }
 
 def help(compat_signature: tuple[str, int, int, int]) -> int:

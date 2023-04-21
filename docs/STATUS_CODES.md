@@ -144,4 +144,8 @@ Status codes are generally grouped by their first and second digits. The first d
     <td>430</td>
     <td>No operative backend selected.</td>
   </tr>
+  <tr>
+    <td>431</td>
+    <td>Invalid operative backend provided.</td>
+  </tr>
 </table>

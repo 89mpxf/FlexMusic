@@ -8,8 +8,9 @@ from .splash import splash
 from .session.session_manager import SessionManager
 from .session.session import Session
 from .helper.runtime_helper import RuntimeHelper
+from .backend.manager import BackendManager
 
-def runtime(server: socket, compat_signature: tuple[str, int, int, int], keyring: tuple, config: dict, debug: bool = False):
+def runtime(server: socket, compat_signature: tuple[str, int, int, int], backend_manager: BackendManager, keyring: tuple, config: dict, debug: bool = False):
     if debug:
         log("runtime", "Runtime successfully started.")
         log("runtime", "Initializing session manager...")
@@ -38,7 +39,7 @@ def runtime(server: socket, compat_signature: tuple[str, int, int, int], keyring
                 continue
             if debug:
                 log("runtime/loop", f"Connection accepted from {addr[0]}:{addr[1]}")
-            session = Session(conn, addr, compat_signature, keyring, session_manager, config, debug)
+            session = Session(conn, addr, compat_signature, backend_manager, keyring, session_manager, config, debug)
             session_manager.create_session(session)
             session.start()
             sleep(config["runtime_overload_mitigation"] // 1000)

@@ -9,15 +9,17 @@ from ..util import log, print_with_time
 from ..session.session_manager import SessionManager
 from ..handshake import HandshakeHandler
 from ..protocol.com import Interpreter
+from ..backend.manager import BackendManager
 
 class Session(Thread):
-    def __init__(self, client: socket, address: tuple[str, int], server_compat_signature: tuple[str, int, int, int], keyring: tuple, session_manager: SessionManager, config: dict, debug: bool = False):
+    def __init__(self, client: socket, address: tuple[str, int], server_compat_signature: tuple[str, int, int, int], backend_manager: BackendManager, keyring: tuple, session_manager: SessionManager, config: dict, debug: bool = False):
         Thread.__init__(self)
         self.daemon = True
 
         self.client: socket = client
         self.address: tuple[str, int] = address
         self.server_compat_signature: tuple[str, int, int, int] = server_compat_signature
+        self.backend_manager = backend_manager
         self.keyring: tuple = keyring
         self.session_manager: SessionManager = session_manager
         self.config: dict = config
@@ -45,7 +47,7 @@ class Session(Thread):
             return
         if self.debug:
             log(f"session-{self.id}", "Handshake successful. Initializing FmLTP interpreter...")
-        self.fmltp_interpreter = Interpreter(self.client, self.address, cipher, self.config, self.id, self.debug)
+        self.fmltp_interpreter = Interpreter(self.client, self.address, cipher, self.backend_manager, self.config, self.id, self.debug)
         if self.debug:
             log(f"session-{self.id}", "Starting FmLTP interpreter...")
         self.client.settimeout(None)

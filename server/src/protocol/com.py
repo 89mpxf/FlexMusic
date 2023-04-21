@@ -1,20 +1,22 @@
 # Import dependencies
 from socket import socket
 from re import findall
-import traceback
+from cryptography.fernet import Fernet
 
 # Import local dependencies
 from ..util import log, print_with_time
 from .load import load_commands
+from ..backend.manager import BackendManager
 
 class InterpreterReturn(Exception):
     pass
 
 class Interpreter:
-    def __init__(self, client: socket, address: tuple[str, int], cipher, config: dict, _id: int, debug: bool = False):
+    def __init__(self, client: socket, address: tuple[str, int], cipher: Fernet, backend_manager: BackendManager ,config: dict, _id: int, debug: bool = False):
         self.client: socket = client
         self.address: tuple[str, int] = address
-        self.cipher = cipher
+        self.cipher: Fernet = cipher
+        self.backend_manager: BackendManager = backend_manager
         self.config: dict = config
         self.id: int = _id
         self.debug: bool = debug

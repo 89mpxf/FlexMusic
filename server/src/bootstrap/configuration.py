@@ -14,6 +14,12 @@ default_configuration = [
     "host = 0.0.0.0",
     "port = 8900",
     "",
+    "# Service management",
+    "# Below is a list of backend services that this version of FlexMusic Server supports.",
+    "# By default, all of these services are enabled. You may wish to disable some of these services.",
+    "# To disable a service, simply set it's corresponding value to 'false'.",
+    "youtube = true"
+    "",
     "# FmLTP authentication method",
     "# By default, this is set to 'auth'. A local index of users will be created and used to authenticate clients.",
     "# You can set this to 'none' to disable authentication if you wish, however, this is highly discouraged.",
@@ -118,6 +124,10 @@ def validate_configuration(config: dict, debug: bool = False) -> dict | None:
     config["runtime_overload_mitigation"] = int(config["runtime_overload_mitigation"])
     if config["runtime_overload_mitigation"] <= 0:
         config["runtime_overload_mitigation"] = 0
+
+    config["backends"] = []
+    if config["youtube"].lower() == "true":
+        config["backends"].append("youtube")
     
     return config
 

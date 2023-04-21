@@ -9,6 +9,7 @@ from .configuration import load_configuration
 from ..crypto import generate_parameters
 from .auth import load_auth_table
 from ..subprogram.load import load_subprogram
+from ..backend.manager import BackendManager
 
 def bootstrap_server(compat_signature: tuple[str, int, int, int]):
     load_subprogram(compat_signature)
@@ -33,7 +34,9 @@ def bootstrap_server(compat_signature: tuple[str, int, int, int]):
             print("FlexMusic Server failed to start.\nAn error occured while loading the authentication table.")
             exit(1)
     keyring = generate_parameters(config["key_size"], debug)
+    backend_manager = BackendManager(config, debug)
+    backend_manager.initialize_backends()
     server = create_server(config, debug)
     if debug:
         log("bootstrap", "Handing off to runtime. Good luck!")
-    return runtime(server, compat_signature, keyring, config, debug)
+    return runtime(server, compat_signature, backend_manager, keyring, config, debug)

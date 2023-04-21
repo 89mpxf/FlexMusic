@@ -133,3 +133,15 @@ Status codes are generally grouped by their first and second digits. The first d
     <td>Command error.</td>
   </tr>
 </table>
+
+### 43x (Operative Failure)
+<table>
+  <tr>
+    <th>Code</th>
+    <th>Reason</th>
+  </tr>
+  <tr>
+    <td>430</td>
+    <td>No operative backend selected.</td>
+  </tr>
+</table>

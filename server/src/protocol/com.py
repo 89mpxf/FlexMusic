@@ -12,7 +12,7 @@ class InterpreterReturn(Exception):
     pass
 
 class Interpreter:
-    def __init__(self, client: socket, address: tuple[str, int], cipher: Fernet, backend_manager: BackendManager ,config: dict, _id: int, debug: bool = False):
+    def __init__(self, client: socket, address: tuple[str, int], cipher: Fernet, backend_manager: BackendManager, config: dict, _id: int, debug: bool = False):
         self.client: socket = client
         self.address: tuple[str, int] = address
         self.cipher: Fernet = cipher
@@ -22,8 +22,9 @@ class Interpreter:
         self.debug: bool = debug
 
         self.commands: dict = {}
-        self.current_user = None
-        self.interpreter_mode = "normal"
+        self.current_user: str | None = None
+        self.interpreter_mode: str = "normal"
+        self.selected_backend: str = "_"
 
     def _core(self):
         while True:

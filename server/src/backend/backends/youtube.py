@@ -5,6 +5,7 @@ class YoutubeBackend:
 
     def search(self, query: str) -> dict:
         _ret = {}
+        _ret["query"] = query
         _ret["output"] = "Not implemented yet."
         return _ret
     

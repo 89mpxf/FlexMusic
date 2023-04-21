@@ -2,7 +2,7 @@
 from socket import socket
 
 # Import local dependencies
-from .util import log
+from .common import log
 from .crypto import process_client_key
 
 class HandshakeHandler:

@@ -2,7 +2,7 @@
 from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 
 # Import local dependencies
-from ..util import log
+from ..common import log
 
 def create_server(config: dict, debug: bool = False) -> socket:
     if debug:

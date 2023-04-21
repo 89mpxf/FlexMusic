@@ -5,7 +5,7 @@ from cryptography.fernet import InvalidToken
 from time import time
 
 # Import local dependencies
-from ..util import log, print_with_time
+from ..common import log, print_with_time
 from ..session.session_manager import SessionManager
 from ..handshake import HandshakeHandler
 from ..protocol.com import Interpreter

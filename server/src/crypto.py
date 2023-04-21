@@ -15,7 +15,7 @@ from base64 import urlsafe_b64encode
 from time import time
 
 # Import local dependencies
-from .util import log
+from .common import log
 
 def generate_parameters(ksize: int, debug: bool = False) -> tuple[dh.DHParameters, bytes, dh.DHPrivateKey, dh.DHPublicKey, bytes]:
     """Diffie-Hellman parameter generation called by the bootstrapper. Should not be called manually."""

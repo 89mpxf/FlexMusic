@@ -1,5 +1,5 @@
 # Import local dependencies
-from ..util import log
+from ..common import log
 
 class BackendManager:
     def __init__(self, config: dict, debug: bool = False):

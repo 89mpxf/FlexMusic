@@ -1,5 +1,5 @@
 # Import local dependencies
-from ....util import log
+from ....common import log
 from ...com import InterpreterReturn
 
 # Metadata values

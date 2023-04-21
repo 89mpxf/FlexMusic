@@ -3,7 +3,7 @@ from os.path import exists
 from platform import system
 
 # Import local dependencies
-from ..util import log
+from ..common import log
 
 default_configuration = [
     "",

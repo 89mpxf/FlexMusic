@@ -3,7 +3,7 @@ from socket import socket
 from time import sleep
 
 # Import local dependencies
-from .util import log
+from .common import log
 from .splash import splash
 from .session.session_manager import SessionManager
 from .session.session import Session

@@ -4,7 +4,7 @@ from time import time
 
 # Import local dependencies
 from ..session.session_manager import SessionManager
-from ..util import log, print_with_time
+from ..common import log, print_with_time
 
 class RuntimeHelper(Thread):
     def __init__(self, compat_signature: tuple[str, int, int, int], session_manager: SessionManager, config: dict, debug: bool = False):

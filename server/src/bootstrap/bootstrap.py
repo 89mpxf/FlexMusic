@@ -2,7 +2,7 @@
 from sys import argv, exit
 
 # Import local dependencies
-from ..util import log
+from ..common import log
 from .server import create_server
 from ..runtime import runtime
 from .configuration import load_configuration

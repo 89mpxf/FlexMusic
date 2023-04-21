@@ -2,7 +2,7 @@
 from json import dumps
 
 # Import local dependencies
-from ....util import log
+from ....common import log
 
 # Metadata values
 __usage = "<query>"

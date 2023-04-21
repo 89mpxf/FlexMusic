@@ -4,7 +4,7 @@ from re import findall
 from cryptography.fernet import Fernet
 
 # Import local dependencies
-from ..util import log, print_with_time
+from ..common import log, print_with_time
 from .load import load_commands
 from ..backend.manager import BackendManager
 

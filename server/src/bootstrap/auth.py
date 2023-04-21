@@ -4,7 +4,7 @@ from getpass import getpass
 from bcrypt import hashpw, gensalt
 
 # Import local dependencies
-from ..util import log
+from ..common import log
 
 def auth_prompt(min_password_length: int, debug: bool = False) -> tuple[str, str] | tuple[None, None]:
     if debug:

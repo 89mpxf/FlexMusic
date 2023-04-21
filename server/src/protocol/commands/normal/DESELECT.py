@@ -1,5 +1,5 @@
 # Import local dependencies
-from ....util import log
+from ....common import log
 
 # Metadata values
 __help_text = "Deselect the current operative backend"
